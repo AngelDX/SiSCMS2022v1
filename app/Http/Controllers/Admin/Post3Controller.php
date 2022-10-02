@@ -54,7 +54,7 @@ class Post3Controller extends Controller
         if ($request->tags) {
             $post->tags()->attach($request->tags);
         }
-        return redirect()->route('admin.posts3.edit',$post);
+        return redirect()->route('admin.posts3.index',$post);
     }
 
     /**
@@ -74,9 +74,11 @@ class Post3Controller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
-    {
-        return view('admin.posts3.edit',compact('post'));
+    public function edit($id){
+        $post=Post::find($id);
+        $categories=Category::pluck('name','id');
+        $tags=Tag::all();
+        return view('admin.posts3.edit',compact('categories','tags','post'));
     }
 
     /**
@@ -86,9 +88,27 @@ class Post3Controller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
-    {
-        //
+    public function update(Request $request, $id){
+        $post=Post::find($id);
+        $post->update($request->all());
+        if ($request->file('file')) {
+            $url=Storage::put('posts',$request->file('file'));
+
+            if($post->image){
+                Storage::delete($post->image->url);
+                $post->image()->update([
+                    'url'=>$url
+                ]);
+            }else{
+                $post->image()->create([
+                    'url'=>$url
+                ]);
+            }
+        }
+        if ($request->tags) {
+            $post->tags()->sync($request->tags);
+        }
+        return redirect()->route('admin.posts3.index',$post)->with('info','El post se actualizó con éxito');
     }
 
     /**
@@ -97,8 +117,9 @@ class Post3Controller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
-    {
-        //
+    public function destroy($id){
+        $post=Post::find($id);
+        $post->delete();
+        return redirect()->route('admin.posts3.index',$post)->with('info','El post se eliminó con éxito');
     }
 }

@@ -27,6 +27,8 @@ Route::get('category/{category}',[PostController::class,'category'])->name('post
 
 Route::get('tag/{tag}',[PostController::class,'tag'])->name('posts.tag');
 
+//Route::delete('post3/{post}',[Post3Controller::class,'destroy'])->name('posts3.destroy');
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');

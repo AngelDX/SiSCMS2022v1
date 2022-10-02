@@ -51,10 +51,10 @@
                         <td>{{$post->user->name}}</td>
                         <td>{{$post->category->name}}</td>
                         <td width="10px">
-                            <a href="{{ route('admin.posts.edit', $post) }}" class="btn btn-primary btn-sm">Editar</a>
+                            <a href="{{ route('admin.posts3.edit', $post) }}" class="btn btn-primary btn-sm">Editar</a>
                         </td>
                         <td width="10px">
-                            <form action="{{route('admin.posts.destroy',$post)}}" method="POST">
+                            <form action="{{route('admin.posts3.destroy',$post)}}" method="POST">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>

@@ -7,6 +7,11 @@
 @stop
 
 @section('content')
+    @if (session('info'))
+        <div class="alert alert-success">
+            <strong>{{session('info')}}</strong>
+        </div>
+    @endif
     {{-- <a class="btn btn-secondary float-right" href="{{route('admin.posts3.create')}}">Nuevo Post</a> --}}
     @livewire('admin.posts-index')
 @stop
